@@ -33,7 +33,6 @@ public class OrderServiceTest {
     public void 상품주문() throws Exception {
         //given
         Item item = createItem("생수 2L 6개", 1400, 25);
-//        int orderCount = 2;
 
         Order order = createOrder(item, 2, "천승범", "01049969685",
                 "01010", "101-101", "1234");

@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import project.cheap9.exception.NotEnoughStockException;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter @Setter
@@ -16,6 +13,9 @@ public class Item {
     @Id @GeneratedValue
     @Column(name = "item_id")
     private Long id;
+
+//    @OneToOne(mappedBy = "item", fetch = FetchType.LAZY)
+//    private Order order;
 
     private String name;
     private int price;

@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "orders")
 @Getter @Setter
 public class Order {
 
@@ -35,34 +36,12 @@ public class Order {
     private LocalDateTime orderDate;
 
     //==생성 메서드==//
-//    public static Order createOrder(Item item, int orderPrice, int count) {
-//        Order order = new Order();
-//        order.setItem(item);
-//        order.setOrderPrice(orderPrice);
-//        order.setCount(count);
-//        order.setStatus(OrderStatus.WAITING);
-//        order.setOrderDate(LocalDateTime.now());
-//
-//        item.removeStock(count);
-//        return order;
-//    }
+    public static void setBase(Item item, Order order) {
+        order.setStatus(OrderStatus.WAITING);
+        order.setOrderDate(LocalDateTime.now());
 
-//    public static Order createOrder(Item item, int count, String name, String number,
-//                                    String zipcode, String dongho, String pw) {
-//        Order order = new Order();
-//        order.setItem(item);
-//        order.setCount(count);
-//        order.setName(name);
-//        order.setNumber(number);
-//        order.setZipcode(zipcode);
-//        order.setDongho(dongho);
-//        order.setPw(pw);
-//        order.setStatus(OrderStatus.WAITING);
-//        order.setOrderDate(LocalDateTime.now());
-//
-//        item.removeStock(count);
-//        return order;
-//    }
+        item.removeStock(order.count);
+    }
 
     //==조회 로직==//
     /**

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import project.cheap9.domain.Order;
-import project.cheap9.repository.OrderRepository;
 import project.cheap9.service.ItemService;
 import project.cheap9.domain.Item;
 import project.cheap9.service.OrderService;
@@ -29,28 +28,27 @@ public class OrderController {
     @PostMapping("/items/{itemId}/order")
     public String create(@PathVariable("itemId") Long itemId, @ModelAttribute("form") OrderForm form) {
 
-//        orderService.saveOrder(itemId, form.getCount(), form.getName(), form.getNumber(),
-//                form.getZipcode(), form.getDongho(), form.getPw());
-
         Item item = itemService.findOne(itemId);
 
         Order order = new Order();
+        order.setItem(item);
         order.setCount(form.getCount());
         order.setName(form.getName());
         order.setNumber(form.getNumber());
         order.setZipcode(form.getZipcode());
         order.setDongho(form.getDongho());
         order.setPw(form.getPw());
+        Order.setBase(item, order);
 
-        orderService.saveOrder(item, order);
-//        orderRepository.save(order);
-        return "home";
+        orderService.saveOrder(order);
+        return "redirect:/";
     }
 
-//    @GetMapping("/orders")
-//    public String list(Model model) {
-//        List<Order> orders = orderService.findOrders(number, pw);
-//        model.addAttribute("orders", orders);
-//        return "orders/orderList";
-//    }
+    @GetMapping("/orders")
+    public String list(Model model) {
+        List<Order> orders = orderService.findOrders(number, pw);
+        model.addAttribute("orders", orders);
+        return "orders/orderList";
+    }
+
 }

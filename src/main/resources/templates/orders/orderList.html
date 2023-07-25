@@ -8,20 +8,21 @@
     <table class="table table-striped">
       <thead>
       <tr>
-        <th>#</th>
         <th>받는 사람</th>
         <th>연락처</th>
         <th>우편번호</th>
         <th>동호수</th>
+        <th>비밀번호</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="order : ${orders}">
-        <td th:text="${order.id}"></td>
+        <td th:text="${order.orderDate}"></td>
         <td th:text="${order.name}"></td>
-        <td th:text="${order.phone_number}"></td>
+        <td th:text="${order.number}"></td>
         <td th:text="${order.zipcode}"></td>
-        <td th:text="${order.detail}"></td>
+        <td th:text="${order.dongho}"></td>
+        <td th:text="${order.pw}"></td>
       </tr>
       </tbody>
     </table>
