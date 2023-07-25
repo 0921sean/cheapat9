@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+  <form role="form" th:action="@{/items/{id}/order (id=${itemId})}" th:object="${form}" method="post">
+<!--    <div class="form-group">-->
+<!--      <label th:for="name">받는 사람</label>-->
+<!--      <input type="text" th:field="*{name}" class="form-control"-->
+<!--             th:class="${#fields.hasErrors('name')}? 'form-control fieldError' : 'form-control'">-->
+<!--      <p th:if="${#fields.hasErrors('name')}"-->
+<!--         th:errors="*{name}">Incorrect date</p>-->
+<!--    </div>-->
+      <div class="form-group">
+          <label th:for="count">수량</label>
+          <input type="count" th:field="*{count}" class="form-control" placeholder="수량을 입력하세요">
+      </div>
+      <div class="form-group">
+          <label th:for="name">받는 사람</label>
+          <input type="name" th:field="*{name}" class="form-control" placeholder="수량을 입력하세요">
+      </div>
+      <div class="form-group">
+          <label th:for="number">연락처</label>
+          <input type="number" th:field="*{number}" class="form-control" placeholder="수량을 입력하세요">
+      </div>
+      <div class="form-group">
+          <label th:for="zipcode">우편번호</label>
+          <input type="zipcode" th:field="*{zipcode}" class="form-control" placeholder="수량을 입력하세요">
+      </div>
+      <div class="form-group">
+          <label th:for="dongho">동호수</label>
+          <input type="dongho" th:field="*{dongho}" class="form-control" placeholder="수량을 입력하세요">
+      </div>
+      <div class="form-group">
+          <label th:for="pw">비밀번호</label>
+          <input type="pw" th:field="*{pw}" class="form-control" placeholder="수량을 입력하세요">
+      </div>
+
+<!--    <div class="form-group">-->
+<!--        <label for="count">수량</label>-->
+<!--        <input type="text" name="count" class="form-control" id="count"-->
+<!--               th:class="${#fields.hasErrors('count')}? 'form-control fieldError' : 'form-control'">-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label for="name">받는 사람</label>-->
+<!--      <input type="text" name="name" class="form-control" id="name"-->
+<!--             th:class="${#fields.hasErrors('name')}? 'form-control fieldError' : 'form-control'">-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label for="number">연락처</label>-->
+<!--      <input type="text" name="number" class="form-control" id="number"-->
+<!--             th:class="${#fields.hasErrors('number')}? 'form-control fieldError' : 'form-control'">-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label for="zipcode">우편번호</label>-->
+<!--      <input type="text" name="zipcode" class="form-control" id="zipcode"-->
+<!--             th:class="${#fields.hasErrors('zipcode')}? 'form-control fieldError' : 'form-control'">-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label for="dongho">동호수</label>-->
+<!--      <input type="text" name="dongho" class="form-control" id="dongho"-->
+<!--             th:class="${#fields.hasErrors('dongho')}? 'form-control fieldError' : 'form-control'">-->
+<!--    </div>-->
+<!--      <div class="form-group">-->
+<!--          <label for="pw">비밀번호</label>-->
+<!--          <input type="text" name="pw" class="form-control" id="pw"-->
+<!--                 th:class="${#fields.hasErrors('pw')}? 'form-control fieldError' : 'form-control'">-->
+<!--      </div>-->
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <br/>
+  <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>
