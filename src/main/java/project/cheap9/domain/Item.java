@@ -21,6 +21,8 @@ public class Item {
     private int price;
     private int stockQuantity;
 
+
+
     //==비즈니스 로직==//
     public void removeStock(int quantity) {
         int restStock = this.stockQuantity - quantity;
