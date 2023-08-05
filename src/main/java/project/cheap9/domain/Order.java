@@ -45,6 +45,23 @@ public class Order {
         item.removeStock(order.count);
     }
 
+//    initDB에 필요한 함수 -> 추후 삭제!
+    public static Order createOrder(Item item, int orderPrice, int count,
+                                    String name, String number, String zipcode, String dongho, String pw) {
+        Order order = new Order();
+        order.setItem(item);
+        order.setOrderPrice(orderPrice);
+        order.setCount(count);
+        order.setName(name);
+        order.setNumber(number);
+        order.setZipcode(zipcode);
+        order.setDongho(dongho);
+        order.setPw(pw);
+        order.setStatus(OrderStatus.WAITING);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
     //==조회 로직==//
 //    /**
 //     * 주문상품 전체 가격 조회

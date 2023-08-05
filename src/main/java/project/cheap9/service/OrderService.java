@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.cheap9.domain.Order;
+import project.cheap9.domain.OrderStatus;
 import project.cheap9.repository.OrderRepository;
 
 import java.util.List;
@@ -29,6 +30,19 @@ public class OrderService {
      */
     public List<Order> findOrders(String number, String pw) {
         return orderRepository.findAll(number, pw);
+    }
+
+    public Order findOne(Long id) {
+        return orderRepository.findOne(id);
+    }
+
+    /**
+     * 주문 수정
+     */
+    @Transactional
+    public void update(Long id, OrderStatus status) {
+        Order order = orderRepository.findOne(id);
+        order.setStatus(status);
     }
 
 }
