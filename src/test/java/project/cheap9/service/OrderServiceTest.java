@@ -39,13 +39,12 @@ public class OrderServiceTest {
 
         //when
         Long orderId = orderService.saveOrder(order);
-//        Long orderId = orderService.order(item.getId(), orderCount);
 
         //then
         Order getOrder = orderRepository.findOne(orderId);
 
         assertEquals("상품 주문시 상태는 WAITING", OrderStatus.WAITING, getOrder.getStatus());
-        assertEquals("주문 가격은 가격 * 수량이다.", 1400 * 2, getOrder.getTotalPrice());
+        assertEquals("주문 가격은 가격 * 수량이다.", 1400 * 2, getOrder.getOrderPrice());
         assertEquals("주문 수량만큼 재고가 줄어야 한다.", 23, item.getStockQuantity());
 
     }
@@ -55,10 +54,11 @@ public class OrderServiceTest {
         //given
         Item item = createItem("생수 2L 6개", 1400, 1);
 
-        int orderCount = 2;
-        
+        Order order = createOrder(item, 2, "천승범", "01049969685",
+                "01010", "101-101", "1234");
+
         //when
-//        orderService.saveOrder(item.getId(), orderCount);
+        orderService.saveOrder(order);
         
         //then
         fail("재고 수량 부족 예외가 발생해야 한다.");
@@ -83,6 +83,7 @@ public class OrderServiceTest {
         order.setZipcode(zipcode);
         order.setDongho(dongho);
         order.setPw(pw);
+        order.setBase(item, order);
         em.persist(order);
         return order;
     }

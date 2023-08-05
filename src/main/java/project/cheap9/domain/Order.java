@@ -2,6 +2,7 @@ package project.cheap9.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import project.cheap9.exception.NotEnoughStockException;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,8 +20,8 @@ public class Order {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    private int orderPrice;
     private int count;
+    private int orderPrice;
 
     private String name;
     private String number;
@@ -39,16 +40,17 @@ public class Order {
     public static void setBase(Item item, Order order) {
         order.setStatus(OrderStatus.WAITING);
         order.setOrderDate(LocalDateTime.now());
+        order.setOrderPrice(item.getPrice() * order.getCount());
 
         item.removeStock(order.count);
     }
 
     //==조회 로직==//
-    /**
-     * 주문상품 전체 가격 조회
-     */
-    public int getTotalPrice() {
-        return getOrderPrice() * getCount();
-    }
+//    /**
+//     * 주문상품 전체 가격 조회
+//     */
+//    public int getTotalPrice() {
+//        return getOrderPrice() * getCount();
+//    }
 
 }

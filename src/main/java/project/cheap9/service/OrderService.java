@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.cheap9.domain.Order;
-import project.cheap9.repository.ItemRepository;
 import project.cheap9.repository.OrderRepository;
 
 import java.util.List;
@@ -14,13 +13,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final ItemRepository itemRepository;
     private final OrderRepository orderRepository;
 
     /**
      * 주문
      */
-
     @Transactional
     public Long saveOrder(Order order) {
         orderRepository.save(order);

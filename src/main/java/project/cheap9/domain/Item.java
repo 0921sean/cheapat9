@@ -14,11 +14,10 @@ public class Item {
     @Column(name = "item_id")
     private Long id;
 
-//    @OneToOne(mappedBy = "item", fetch = FetchType.LAZY)
-//    private Order order;
-
     private String name;
+    private int beforePrice;
     private int price;
+    private int discountRate;
     private int stockQuantity;
 
     //==비즈니스 로직==//

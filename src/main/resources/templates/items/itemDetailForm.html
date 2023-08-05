@@ -10,6 +10,7 @@
       <tr>
         <th>#</th>
         <th>상품명</th>
+        <th>할인 전 가격</th>
         <th>가격</th>
         <th>재고수량</th>
         <th></th>
@@ -19,6 +20,7 @@
       <tr>
         <td th:text="*{item.id}"></td>
         <td th:text="*{item.name}"></td>
+        <td th:text="*{item.beforePrice}"></td>
         <td th:text="*{item.price}"></td>
         <td th:text="${item.stockQuantity}"></td>
         <td>
