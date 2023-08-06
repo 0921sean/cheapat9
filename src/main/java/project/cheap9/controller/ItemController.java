@@ -34,9 +34,9 @@ public class ItemController {
     public String create(ItemForm form) {
         Item item = new Item();
         item.setName(form.getName());
-        item.setBeforePrice(form.getBeforePrice());
+        item.setOriginalPrice(form.getOriginalPrice());
         item.setPrice(form.getPrice());
-        item.setDiscountRate((form.getBeforePrice() - form.getPrice()) * 100 / form.getBeforePrice());
+        item.setDiscountRate((form.getOriginalPrice() - form.getPrice()) * 100 / form.getOriginalPrice());
         item.setStockQuantity(form.getStockQuantity());
 
         itemService.saveItem(item);

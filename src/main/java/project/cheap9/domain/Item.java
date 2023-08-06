@@ -15,7 +15,7 @@ public class Item {
     private Long id;
 
     private String name;
-    private int beforePrice;
+    private int originalPrice;
     private int price;
     private int discountRate;
     private int stockQuantity;

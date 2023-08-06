@@ -25,7 +25,9 @@ public class ItemApiController {
     public CreateItemResponse saveItem(@RequestBody @Valid CreateItemRequest request) {
         Item item = new Item();
         item.setName(request.getName());
+        item.setOriginalPrice(request.getOriginalPrice());
         item.setPrice(request.getPrice());
+        item.setDiscountRate(request.getDiscountRate());
         item.setStockQuantity(request.getStockQuantity());
 
         Long id = itemService.saveItem(item);
@@ -62,7 +64,9 @@ public class ItemApiController {
     @Data
     static class CreateItemRequest {
         private String name;
+        private int originalPrice;
         private int price;
+        private int discountRate;
         private int stockQuantity;
     }
 
@@ -82,13 +86,17 @@ public class ItemApiController {
     static class ItemDto {
         private Long itemId;
         private String name;
+        private int originalPrice;
         private int price;
+        private int discountRate;
         private int stockQuantity;
 
         public ItemDto(Item item) {
             itemId = item.getId();
             name = item.getName();
+            originalPrice = item.getOriginalPrice();
             price = item.getPrice();
+            discountRate = item.getDiscountRate();
             stockQuantity = item.getStockQuantity();
         }
     }

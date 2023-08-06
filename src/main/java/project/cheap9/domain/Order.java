@@ -5,6 +5,7 @@ import lombok.Setter;
 import project.cheap9.exception.NotEnoughStockException;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,11 +25,14 @@ public class Order {
     private int orderPrice;
 
     private String name;
+
+    // @Pattern(regexp = "^\\d{10,11}$", message = "Phone number should be 10 or 11 digits")
     private String number;
 
     private String zipcode;
     private String dongho;
 
+    // @Pattern(regexp = "^\\d{4}$", message = "Password should be exactly 4 digits")
     private String pw;
 
     @Enumerated(EnumType.STRING)
