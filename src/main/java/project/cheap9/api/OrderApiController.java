@@ -12,6 +12,7 @@ import project.cheap9.service.OrderService;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,14 +64,15 @@ public class OrderApiController {
     @PostMapping("/api/orders/detail")
     public List<OrderDto> getOrderByNumber(@RequestBody @Valid GetOrderRequest request) {
         List<Order> orders = orderService.findOrdersByNumber(request.getNumber());
+        List<Order> matchingOrders = new ArrayList<>();
 
         for (Order order : orders) {
-            if (!passwordEncoder.matches(request.getPw(), order.getPw())) {
-                throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+            if (passwordEncoder.matches(request.getPw(), order.getPw())) {
+                matchingOrders.add(order);
             }
         }
 
-        List<OrderDto> result = orders.stream()
+        List<OrderDto> result = matchingOrders.stream()
                 .map(o -> new OrderDto(o))
                 .collect(Collectors.toList());
         return result;
