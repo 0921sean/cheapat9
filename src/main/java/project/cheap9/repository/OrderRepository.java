@@ -35,14 +35,12 @@ public class OrderRepository {
                 .getResultList();
     }
 
-    public List<Order> findAllByNumber(String number, String pw) {
+    public List<Order> findAllByNumber(String number) {
         return em.createQuery(
                 "select o from Order o" +
                         " join fetch o.item" +
-                        " where o.number = :number" +
-                        " and o.pw = :pw", Order.class)
+                        " where o.number = :number", Order.class)
                 .setParameter("number", number)
-                .setParameter("pw", pw)
                 .getResultList();
     }
 

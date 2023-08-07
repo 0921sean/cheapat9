@@ -2,6 +2,7 @@ package project.cheap9.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import project.cheap9.exception.NotEnoughStockException;
 
 import javax.persistence.*;
@@ -51,7 +52,7 @@ public class Order {
 
 //    initDB에 필요한 함수 -> 추후 삭제!
     public static Order createOrder(Item item, int orderPrice, int count,
-                                    String name, String number, String zipcode, String dongho, String pw) {
+                                    String name, String number, String zipcode, String dongho, String pw, PasswordEncoder passwordEncoder) {
         Order order = new Order();
         order.setItem(item);
         order.setOrderPrice(orderPrice);
@@ -60,7 +61,7 @@ public class Order {
         order.setNumber(number);
         order.setZipcode(zipcode);
         order.setDongho(dongho);
-        order.setPw(pw);
+        order.setPw(passwordEncoder.encode(pw));
         order.setStatus(OrderStatus.WAITING);
         order.setOrderDate(LocalDateTime.now());
         return order;

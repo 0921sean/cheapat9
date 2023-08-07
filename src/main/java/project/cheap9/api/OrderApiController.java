@@ -2,11 +2,11 @@ package project.cheap9.api;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import project.cheap9.domain.Item;
 import project.cheap9.domain.Order;
 import project.cheap9.domain.OrderStatus;
-import project.cheap9.repository.OrderRepository;
 import project.cheap9.service.ItemService;
 import project.cheap9.service.OrderService;
 
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 public class OrderApiController {
 
     private final OrderService orderService;
-    private final OrderRepository orderRepository;
     private final ItemService itemService;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 주문 생성
@@ -37,7 +37,7 @@ public class OrderApiController {
         order.setNumber(request.getNumber());
         order.setZipcode(request.getZipcode());
         order.setDongho(request.getDongho());
-        order.setPw(request.getPw());
+        order.setPw(passwordEncoder.encode(request.getPw()));
         Order.setBase(item, order);
 
         Long id = orderService.saveOrder(order);
@@ -62,7 +62,13 @@ public class OrderApiController {
      */
     @PostMapping("/api/orders/detail")
     public List<OrderDto> getOrderByNumber(@RequestBody @Valid GetOrderRequest request) {
-        List<Order> orders = orderRepository.findAllByNumber(request.getNumber(), request.getPw());
+        List<Order> orders = orderService.findOrdersByNumber(request.getNumber());
+
+        for (Order order : orders) {
+            if (!passwordEncoder.matches(request.getPw(), order.getPw())) {
+                throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+            }
+        }
 
         List<OrderDto> result = orders.stream()
                 .map(o -> new OrderDto(o))
@@ -75,12 +81,21 @@ public class OrderApiController {
      */
     @GetMapping("/api/orders")
     public List<OrderDto> orders() {
-        List<Order> orders = orderRepository.findAllWith();
+        List<Order> orders = orderService.findOrdersWith();
         List<OrderDto> result = orders.stream()
                 .map(o -> new OrderDto(o))
                 .collect(Collectors.toList());
         return result;
     }
+
+//    @GetMapping("/api/admin/orders")
+//    public List<OrderDto> ordersAdmin() {
+//        List<Order> orders = orderService.findOrdersWith();
+//        List<OrderDto> result = orders.stream()
+//                .map(o -> new OrderDto(o))
+//                .collect(Collectors.toList());
+//        return result;
+//    }
 
 //   + 필요한 재료들
     /**
@@ -139,7 +154,6 @@ public class OrderApiController {
         private String number;
         private String zipcode;
         private String dongho;
-//        private String pw;
         private LocalDateTime orderDate;
         private OrderStatus orderStatus;
 

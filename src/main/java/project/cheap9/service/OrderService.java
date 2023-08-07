@@ -31,6 +31,12 @@ public class OrderService {
     public List<Order> findOrders(String number, String pw) {
         return orderRepository.findAll(number, pw);
     }
+    public List<Order> findOrdersWith() {
+        return orderRepository.findAllWith();
+    }
+    public List<Order> findOrdersByNumber(String number) {
+        return orderRepository.findAllByNumber(number);
+    }
 
     public Order findOne(Long id) {
         return orderRepository.findOne(id);

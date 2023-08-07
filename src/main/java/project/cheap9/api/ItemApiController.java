@@ -27,8 +27,7 @@ public class ItemApiController {
         item.setName(request.getName());
         item.setOriginalPrice(request.getOriginalPrice());
         item.setPrice(request.getPrice());
-        int DiscountRate = (request.getOriginalPrice() - request.getPrice()) * 100 / request.getOriginalPrice();
-        item.setDiscountRate(DiscountRate);
+        item.setDiscountRate((request.getOriginalPrice() - request.getPrice()) * 100 / request.getOriginalPrice());
         item.setStockQuantity(request.getStockQuantity());
 
         Long id = itemService.saveItem(item);
@@ -67,7 +66,6 @@ public class ItemApiController {
         private String name;
         private int originalPrice;
         private int price;
-//        private int discountRate;
         private int stockQuantity;
     }
 
