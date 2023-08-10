@@ -28,7 +28,7 @@ public class OrderApiController {
      * 주문 생성
      */
     @PostMapping("/api/orders")
-    public CreateOrderResponse saveOrder(@RequestBody @Valid CreateOrderRequest request) {
+    public OrderDto saveOrder(@RequestBody @Valid CreateOrderRequest request) {
         Item item = itemService.findOne(request.getItemId());
 
         Order order = new Order(); // orderPrice, (count), (status, orderDate) 값 없음
@@ -37,18 +37,19 @@ public class OrderApiController {
         order.setName(request.getName());
         order.setNumber(request.getNumber());
         order.setZipcode(request.getZipcode());
+        order.setAddress(request.getAddress());
         order.setDongho(request.getDongho());
         order.setPw(passwordEncoder.encode(request.getPw()));
         Order.setBase(item, order);
 
         Long id = orderService.saveOrder(order);
-        return new CreateOrderResponse(id);
+        return new OrderDto(order);
     }
 
     /**
      * 주문 수정
      */
-    @PutMapping("/api/orders/{id}")
+    @PutMapping("/api/admin/orders/{id}")
     public UpdateOrderResponse updateOrder(
             @PathVariable("id") Long id,
             @RequestBody @Valid UpdateOrderRequest request) {
@@ -81,23 +82,14 @@ public class OrderApiController {
     /**
      * 전체 주문 조회
      */
-    @GetMapping("/api/orders")
+    @GetMapping("/api/admin/orders")
     public List<OrderDto> orders() {
-        List<Order> orders = orderService.findOrdersWith();
+        List<Order> orders = orderService.findOrders();
         List<OrderDto> result = orders.stream()
                 .map(o -> new OrderDto(o))
                 .collect(Collectors.toList());
         return result;
     }
-
-//    @GetMapping("/api/admin/orders")
-//    public List<OrderDto> ordersAdmin() {
-//        List<Order> orders = orderService.findOrdersWith();
-//        List<OrderDto> result = orders.stream()
-//                .map(o -> new OrderDto(o))
-//                .collect(Collectors.toList());
-//        return result;
-//    }
 
 //   + 필요한 재료들
     /**
@@ -110,6 +102,7 @@ public class OrderApiController {
         private String name;
         private String number;
         private String zipcode;
+        private String address;
         private String dongho;
         private String pw;
     }
@@ -128,14 +121,14 @@ public class OrderApiController {
     /**
      * 출력값
      */
-    @Data
-    static class CreateOrderResponse {
-        private Long id;
-
-        public CreateOrderResponse(Long id) {
-            this.id = id;
-        }
-    }
+//    @Data
+//    static class CreateOrderResponse {
+//        private Long id;
+//
+//        public CreateOrderResponse(Long id) {
+//            this.id = id;
+//        }
+//    }
 
     @Data
     static class UpdateOrderResponse {
@@ -155,6 +148,7 @@ public class OrderApiController {
         private String name;
         private String number;
         private String zipcode;
+        private String address;
         private String dongho;
         private LocalDateTime orderDate;
         private OrderStatus orderStatus;
@@ -167,8 +161,8 @@ public class OrderApiController {
             name = order.getName();
             number = order.getNumber();
             zipcode = order.getZipcode();
+            address = order.getAddress();
             dongho = order.getDongho();
-//            pw = order.getPw();
             orderDate = order.getOrderDate();
             orderStatus = order.getStatus();
         }

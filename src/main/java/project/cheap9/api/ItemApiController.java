@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import project.cheap9.domain.Item;
-import project.cheap9.repository.ItemRepository;
 import project.cheap9.service.ItemService;
 
 import javax.validation.Valid;
@@ -16,12 +15,11 @@ import java.util.stream.Collectors;
 public class ItemApiController {
 
     private final ItemService itemService;
-    private final ItemRepository itemRepository;
 
     /**
-     * 상품 등록
+     * 상품 정보 저장하기
      */
-    @PostMapping("/api/items")
+    @PostMapping("/api/admin/items")
     public CreateItemResponse saveItem(@RequestBody @Valid CreateItemRequest request) {
         Item item = new Item();
         item.setName(request.getName());
@@ -50,7 +48,7 @@ public class ItemApiController {
      */
     @GetMapping("/api/items")
     public List<ItemDto> items() {
-        List<Item> items = itemRepository.findAll();
+        List<Item> items = itemService.findItems();
         List<ItemDto> result = items.stream()
                 .map(i -> new ItemDto(i))
                 .collect(Collectors.toList());

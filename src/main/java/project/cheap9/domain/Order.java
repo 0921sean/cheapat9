@@ -31,6 +31,7 @@ public class Order {
     private String number;
 
     private String zipcode;
+    private String address;
     private String dongho;
 
     // @Pattern(regexp = "^\\d{4}$", message = "Password should be exactly 4 digits")
@@ -52,7 +53,8 @@ public class Order {
 
 //    initDB에 필요한 함수 -> 추후 삭제!
     public static Order createOrder(Item item, int orderPrice, int count,
-                                    String name, String number, String zipcode, String dongho, String pw, PasswordEncoder passwordEncoder) {
+                                    String name, String number, String zipcode, String address, String dongho,
+                                    String pw, PasswordEncoder passwordEncoder) {
         Order order = new Order();
         order.setItem(item);
         order.setOrderPrice(orderPrice);
@@ -60,6 +62,7 @@ public class Order {
         order.setName(name);
         order.setNumber(number);
         order.setZipcode(zipcode);
+        order.setAddress(address);
         order.setDongho(dongho);
         order.setPw(passwordEncoder.encode(pw));
         order.setStatus(OrderStatus.WAITING);

@@ -21,14 +21,7 @@ public class OrderRepository {
         return em.find(Order.class, id);
     }
 
-    public List<Order> findAll(String number, String pw) {
-        return em.createQuery("select o from Order o where o.number = :number and o.pw = :pw", Order.class)
-                .setParameter("number", number)
-                .setParameter("pw", pw)
-                .getResultList();
-    }
-
-    public List<Order> findAllWith() {
+    public List<Order> findAll() {
         return em.createQuery(
                 "select o from Order o" +
                                 " join fetch o.item i", Order.class)

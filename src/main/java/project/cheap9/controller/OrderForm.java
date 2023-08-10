@@ -20,6 +20,9 @@ public class OrderForm {
     @NotEmpty(message = "우편번호 입력은 필수입니다")
     private String zipcode;
 
+    @NotEmpty(message = "주소 입력은 필수입니다")
+    private String address;
+
     @NotEmpty(message = "동호수 입력은 필수입니다")
     private String dongho;
 

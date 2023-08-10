@@ -36,6 +36,7 @@ public class OrderController {
         order.setName(form.getName());
         order.setNumber(form.getNumber());
         order.setZipcode(form.getZipcode());
+        order.setAddress(form.getAddress());
         order.setDongho(form.getDongho());
         order.setPw(form.getPw());
         Order.setBase(item, order);

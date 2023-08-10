@@ -28,11 +28,8 @@ public class OrderService {
     /**
      * 주문 검색
      */
-    public List<Order> findOrders(String number, String pw) {
-        return orderRepository.findAll(number, pw);
-    }
-    public List<Order> findOrdersWith() {
-        return orderRepository.findAllWith();
+    public List<Order> findOrders() {
+        return orderRepository.findAll();
     }
     public List<Order> findOrdersByNumber(String number) {
         return orderRepository.findAllByNumber(number);

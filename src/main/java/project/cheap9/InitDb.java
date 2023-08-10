@@ -34,7 +34,7 @@ public class InitDb {
             Item item = createItem("햇반", 200, 100, 200);
             em.persist(item);
 
-            Order order1 = Order.createOrder(item, 150, 1, "userA", "0101", "152", "3010", "999", passwordEncoder);
+            Order order1 = Order.createOrder(item, 150, 1, "userA", "0101", "152", "서울특별시", "3010", "999", passwordEncoder);
             em.persist(order1);
 
         }
@@ -43,7 +43,7 @@ public class InitDb {
             Item item = createItem("생수", 250, 200, 300);
             em.persist(item);
 
-            Order order2 = Order.createOrder(item, 200, 2, "userB", "0102", "182", "3011", "9999", passwordEncoder);
+            Order order2 = Order.createOrder(item, 200, 2, "userB", "0102", "182", "경기도", "3011", "9999", passwordEncoder);
             em.persist(order2);
 
         }
