@@ -42,6 +42,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // configure HTTP security here ...
         http
+                .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
 //                .antMatchers("/api/admin/**").hasRole("ADMIN")
