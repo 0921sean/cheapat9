@@ -7,6 +7,7 @@ import project.cheap9.domain.Item;
 import project.cheap9.service.ItemService;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,19 +28,36 @@ public class ItemApiController {
         item.setPrice(request.getPrice());
         item.setDiscountRate((request.getOriginalPrice() - request.getPrice()) * 100 / request.getOriginalPrice());
         item.setStockQuantity(request.getStockQuantity());
+        item.setStartDate(request.getStartDate());
+        item.setEndDate(request.getEndDate());
 
         Long id = itemService.saveItem(item);
         return new CreateItemResponse(id);
     }
 
+//    /**
+//     * 개별 상품 조회
+//     */
+//    @GetMapping("/api/items/{id}")
+//    public ItemDto getOneItem(
+//            @PathVariable("id") Long id) {
+//        Item item = itemService.findOne(id);
+//        ItemDto result = new ItemDto(item);
+//        return result;
+//    }
+
     /**
-     * 개별 상품 조회
+     * 개별 상품 조회 (수정 부분)
      */
     @GetMapping("/api/items/{id}")
-    public ItemDto getOneItem(
-            @PathVariable("id") Long id) {
+    public GetOneItemResponse getOneItem(@PathVariable("id") Long id) {
         Item item = itemService.findOne(id);
-        ItemDto result = new ItemDto(item);
+        LocalDateTime today = LocalDateTime.now();
+        boolean isEvent = false;
+        if (!today.isBefore(item.getStartDate()) && !today.isAfter(item.getEndDate())) {
+            isEvent = true;
+        }
+        GetOneItemResponse result = new GetOneItemResponse(item, isEvent);
         return result;
     }
 
@@ -65,6 +83,8 @@ public class ItemApiController {
         private int originalPrice;
         private int price;
         private int stockQuantity;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
     }
 
     /**
@@ -95,6 +115,30 @@ public class ItemApiController {
             price = item.getPrice();
             discountRate = item.getDiscountRate();
             stockQuantity = item.getStockQuantity();
+        }
+    }
+
+    /**
+     * 수정 부분
+     */
+    @Data
+    static class GetOneItemResponse {
+        private Long itemId;
+        private String name;
+        private int originalPrice;
+        private int price;
+        private int discountRate;
+        private int stockQuantity;
+        private boolean isEventing;
+
+        public GetOneItemResponse(Item item, boolean isEvent) {
+            itemId = item.getId();
+            name = item.getName();
+            originalPrice = item.getOriginalPrice();
+            price = item.getPrice();
+            discountRate = item.getDiscountRate();
+            stockQuantity = item.getStockQuantity();
+            isEventing = isEvent;
         }
     }
 
