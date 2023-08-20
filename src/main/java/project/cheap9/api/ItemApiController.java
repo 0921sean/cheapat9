@@ -8,6 +8,7 @@ import project.cheap9.service.ItemService;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,8 +29,12 @@ public class ItemApiController {
         item.setPrice(request.getPrice());
         item.setDiscountRate((request.getOriginalPrice() - request.getPrice()) * 100 / request.getOriginalPrice());
         item.setStockQuantity(request.getStockQuantity());
-        item.setStartDate(request.getStartDate());
-        item.setEndDate(request.getEndDate());
+        LocalDateTime startDate = LocalDateTime.parse(request.getStartDate(),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        item.setStartDate(startDate);
+        LocalDateTime endDate = LocalDateTime.parse(request.getEndDate(),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        item.setEndDate(endDate);
 
         Long id = itemService.saveItem(item);
         return new CreateItemResponse(id);
@@ -83,8 +88,8 @@ public class ItemApiController {
         private int originalPrice;
         private int price;
         private int stockQuantity;
-        private LocalDateTime startDate;
-        private LocalDateTime endDate;
+        private String startDate;
+        private String endDate;
     }
 
     /**
@@ -129,7 +134,7 @@ public class ItemApiController {
         private int price;
         private int discountRate;
         private int stockQuantity;
-        private boolean isEventing;
+        private boolean eventIng;
 
         public GetOneItemResponse(Item item, boolean isEvent) {
             itemId = item.getId();
@@ -138,7 +143,7 @@ public class ItemApiController {
             price = item.getPrice();
             discountRate = item.getDiscountRate();
             stockQuantity = item.getStockQuantity();
-            isEventing = isEvent;
+            eventIng = isEvent;
         }
     }
 
