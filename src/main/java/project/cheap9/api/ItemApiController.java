@@ -41,6 +41,18 @@ public class ItemApiController {
     }
 
     /**
+     * 상품 정보 수정하기
+     */
+    @PutMapping("/api/admin/items/{id}")
+    public UpdateItemResponse updateItem(@PathVariable("id") Long id,
+                                         @RequestBody @Valid UpdateItemRequest request) {
+        itemService.update(id, request.getName(), request.getOriginalPrice(), request.getPrice(),
+                request.getStockQuantity(), request.getStartDate(), request.getEndDate());
+        Item item = itemService.findOne(id);
+        return new UpdateItemResponse(item.getId());
+    }
+
+    /**
      * 개별 상품 조회
      */
     @GetMapping("/api/items/{id}")
@@ -76,6 +88,16 @@ public class ItemApiController {
         private String endDate;
     }
 
+    @Data
+    static class UpdateItemRequest {
+        private String name;
+        private int originalPrice;
+        private int price;
+        private int stockQuantity;
+        private String startDate;
+        private String endDate;
+    }
+
     /**
      * 출력값
      */
@@ -84,6 +106,15 @@ public class ItemApiController {
         private Long id;
 
         public CreateItemResponse(Long id) {
+            this.id = id;
+        }
+    }
+
+    @Data
+    static class UpdateItemResponse {
+        private Long id;
+
+        public UpdateItemResponse(Long id) {
             this.id = id;
         }
     }
