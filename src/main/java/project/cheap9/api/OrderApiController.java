@@ -58,7 +58,7 @@ public class OrderApiController {
     /**
      * 주문 수정
      */
-    @PutMapping("/api/admin/orders/{id}")
+    @PatchMapping("/api/admin/orders/{id}")
     public UpdateOrderResponse updateOrder(
             @PathVariable("id") Long id,
             @RequestBody @Valid UpdateOrderRequest request) {
