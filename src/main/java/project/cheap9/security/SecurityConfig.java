@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/admin/**").hasRole("ADMIN")
+//                .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

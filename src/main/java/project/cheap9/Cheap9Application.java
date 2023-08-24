@@ -6,8 +6,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
+
 @SpringBootApplication
 public class Cheap9Application {
+
+	@PostConstruct
+	public void started() {
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Cheap9Application.class, args);
@@ -21,7 +29,7 @@ public class Cheap9Application {
 				registry.addMapping("/**")
 //						.allowedOrigins("http://localhost:3000")
 						.allowedOrigins("*")
-						.allowedMethods("GET", "POST", "PUT", "DELETE");
+						.allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH");
 			}
 		};
 	}
