@@ -12,6 +12,10 @@ spring:
 #       show_sql: true
 #       format_sql: true
 #   open-in-view: false
+
+admin:
+  password: 1234 #추가
+
 logging.level:
   org.hibernate.SQL: debug
 # org.hibernate.type: trace

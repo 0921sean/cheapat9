@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.14'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'war'
 }
 
 group = 'project'
@@ -9,6 +10,10 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '11'
+}
+
+jar {
+	enabled = false
 }
 
 configurations {
@@ -22,12 +27,19 @@ repositories {
 }
 
 dependencies {
+	// mysql
+	implementation 'com.mysql:mysql-connector-j'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
+
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-maven-plugin
+	implementation group: 'org.springframework.boot', name: 'spring-boot-maven-plugin', version: '2.7.14'
+
+
 	testImplementation 'junit:junit:4.13.1'
 
 	compileOnly 'org.projectlombok:lombok'
@@ -35,15 +47,23 @@ dependencies {
 
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	/*
 	testImplementation("org.junit.vintage:unit-vintage-engine") {
 		exclude group: "org.hamcrest", module: "hamcrest-core"
 	}
+	*/
 
 	/* Spring Security */
 	implementation 'org.springframework.boot:spring-boot-starter-security' // Spring Security
 
 }
 
+test {
+	useJUnitPlatform()
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+apply plugin: 'war'
