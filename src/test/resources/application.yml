@@ -13,8 +13,8 @@ spring:
 #       format_sql: true
 #   open-in-view: false
 admin:
-  id: woiwufvhn
-  password: eazwrdctfvy
+  id:
+  password:
 
 logging.level:
   org.hibernate.SQL: debug
