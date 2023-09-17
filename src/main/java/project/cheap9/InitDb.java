@@ -19,8 +19,8 @@ public class InitDb {
 
     @PostConstruct
     public void init() {
-        initService.dbInit1();
-        initService.dbInit2();
+        //initService.dbInit1();
+        //initService.dbInit2();
     }
 
     @Component
@@ -34,7 +34,7 @@ public class InitDb {
         public void dbInit1() {
             Item item = createItem("햇반", 200, 100, 200,
                     LocalDateTime.of(2023, 1, 1, 0, 0),
-                    LocalDateTime.of(2025, 1, 31, 0, 0));
+                    LocalDateTime.of(2023, 1, 31, 0, 0));
             em.persist(item);
 
             Order order1 = Order.createOrder(item, 150, 1, "userA", "0101", "152", "서울특별시", "3010", "999", passwordEncoder);
@@ -44,8 +44,8 @@ public class InitDb {
 
         public void dbInit2() {
             Item item = createItem("생수", 250, 200, 300,
-                    LocalDateTime.of(2024, 1, 1, 0, 0),
-                    LocalDateTime.of(2025, 1, 31, 0, 0));
+                    LocalDateTime.of(2023, 1, 1, 0, 0),
+                    LocalDateTime.of(2023, 1, 31, 0, 0));
             em.persist(item);
 
             Order order2 = Order.createOrder(item, 200, 2, "userB", "0102", "182", "경기도", "3011", "9999", passwordEncoder);

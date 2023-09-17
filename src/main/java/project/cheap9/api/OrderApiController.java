@@ -27,6 +27,11 @@ public class OrderApiController {
     private final ItemService itemService;
     private final PasswordEncoder passwordEncoder;
 
+    @GetMapping("/healthCheck")
+    public String healthCheck() {
+        return "200 OK";
+    }
+
     /**
      * 주문 생성
      */
