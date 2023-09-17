@@ -1,5 +1,6 @@
 package project.cheap9.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,18 +21,21 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /* Password 암호화 */
+    @Value("${admin.password}")
+    private String password;
+
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         /* 메모리에 임시 사용자 계정 생성을 위한 객체 생성 */
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
 
-        /* Password 암호화 */
-        String password = passwordEncoder.encode("1234");
+
 
         /* 임시 사용자 계정 생성 */
         manager.createUser(
                 User.withUsername("admin")
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .roles("ADMIN")
                 .build()
         );

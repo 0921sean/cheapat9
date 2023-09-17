@@ -2,11 +2,14 @@ package project.cheap9.api;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import project.cheap9.domain.Item;
 import project.cheap9.domain.Order;
 import project.cheap9.domain.OrderStatus;
+import project.cheap9.exception.NotEnoughStockException;
 import project.cheap9.service.ItemService;
 import project.cheap9.service.OrderService;
 
@@ -51,10 +54,16 @@ public class OrderApiController {
         return new OrderDto(order);
     }
 
+    /* 주문 생성 예외 처리 */
+    @ExceptionHandler(NotEnoughStockException.class)
+    public ResponseEntity<String> orderException(NotEnoughStockException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
     /**
      * 주문 수정
      */
-    @PutMapping("/api/admin/orders/{id}")
+    @PatchMapping("/api/admin/orders/{id}")
     public UpdateOrderResponse updateOrder(
             @PathVariable("id") Long id,
             @RequestBody @Valid UpdateOrderRequest request) {

@@ -33,11 +33,10 @@ public class Item {
 
     //==비즈니스 로직==//
     public void removeStock(int quantity) {
-        int restStock = this.stockQuantity - quantity;
-        if (restStock < 0) {
-            throw new NotEnoughStockException("need more stock");
+        if (this.stockQuantity - quantity < 0) {
+            throw new NotEnoughStockException("Error: Not enough stock");
         }
-        this.stockQuantity = restStock;
+        this.stockQuantity = this.stockQuantity - quantity;
     }
 
 }

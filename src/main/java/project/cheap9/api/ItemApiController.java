@@ -8,6 +8,7 @@ import project.cheap9.service.ItemService;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,36 +29,36 @@ public class ItemApiController {
         item.setPrice(request.getPrice());
         item.setDiscountRate((request.getOriginalPrice() - request.getPrice()) * 100 / request.getOriginalPrice());
         item.setStockQuantity(request.getStockQuantity());
-        item.setStartDate(request.getStartDate());
-        item.setEndDate(request.getEndDate());
+        LocalDateTime startDate = LocalDateTime.parse(request.getStartDate(),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        item.setStartDate(startDate);
+        LocalDateTime endDate = LocalDateTime.parse(request.getEndDate(),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        item.setEndDate(endDate);
 
         Long id = itemService.saveItem(item);
         return new CreateItemResponse(id);
     }
 
-//    /**
-//     * 개별 상품 조회
-//     */
-//    @GetMapping("/api/items/{id}")
-//    public ItemDto getOneItem(
-//            @PathVariable("id") Long id) {
-//        Item item = itemService.findOne(id);
-//        ItemDto result = new ItemDto(item);
-//        return result;
-//    }
+    /**
+     * 상품 정보 수정하기
+     */
+    @PutMapping("/api/admin/items/{id}")
+    public UpdateItemResponse updateItem(@PathVariable("id") Long id,
+                                         @RequestBody @Valid UpdateItemRequest request) {
+        itemService.update(id, request.getName(), request.getOriginalPrice(), request.getPrice(),
+                request.getStockQuantity(), request.getStartDate(), request.getEndDate());
+        Item item = itemService.findOne(id);
+        return new UpdateItemResponse(item.getId());
+    }
 
     /**
-     * 개별 상품 조회 (수정 부분)
+     * 개별 상품 조회
      */
     @GetMapping("/api/items/{id}")
-    public GetOneItemResponse getOneItem(@PathVariable("id") Long id) {
+    public ItemDto getOneItem(@PathVariable("id") Long id) {
         Item item = itemService.findOne(id);
-        LocalDateTime today = LocalDateTime.now();
-        boolean isEvent = false;
-        if (!today.isBefore(item.getStartDate()) && !today.isAfter(item.getEndDate())) {
-            isEvent = true;
-        }
-        GetOneItemResponse result = new GetOneItemResponse(item, isEvent);
+        ItemDto result = new ItemDto(item);
         return result;
     }
 
@@ -83,8 +84,18 @@ public class ItemApiController {
         private int originalPrice;
         private int price;
         private int stockQuantity;
-        private LocalDateTime startDate;
-        private LocalDateTime endDate;
+        private String startDate;
+        private String endDate;
+    }
+
+    @Data
+    static class UpdateItemRequest {
+        private String name;
+        private int originalPrice;
+        private int price;
+        private int stockQuantity;
+        private String startDate;
+        private String endDate;
     }
 
     /**
@@ -100,6 +111,15 @@ public class ItemApiController {
     }
 
     @Data
+    static class UpdateItemResponse {
+        private Long id;
+
+        public UpdateItemResponse(Long id) {
+            this.id = id;
+        }
+    }
+
+    @Data
     static class ItemDto {
         private Long itemId;
         private String name;
@@ -107,6 +127,9 @@ public class ItemApiController {
         private int price;
         private int discountRate;
         private int stockQuantity;
+        private String startDate;
+        private String endDate;
+        private boolean eventIng;
 
         public ItemDto(Item item) {
             itemId = item.getId();
@@ -115,30 +138,11 @@ public class ItemApiController {
             price = item.getPrice();
             discountRate = item.getDiscountRate();
             stockQuantity = item.getStockQuantity();
-        }
-    }
+            startDate = item.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            endDate = item.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-    /**
-     * 수정 부분
-     */
-    @Data
-    static class GetOneItemResponse {
-        private Long itemId;
-        private String name;
-        private int originalPrice;
-        private int price;
-        private int discountRate;
-        private int stockQuantity;
-        private boolean isEventing;
-
-        public GetOneItemResponse(Item item, boolean isEvent) {
-            itemId = item.getId();
-            name = item.getName();
-            originalPrice = item.getOriginalPrice();
-            price = item.getPrice();
-            discountRate = item.getDiscountRate();
-            stockQuantity = item.getStockQuantity();
-            isEventing = isEvent;
+            LocalDateTime today = LocalDateTime.now();
+            eventIng = !today.isBefore(item.getStartDate()) && !today.isAfter(item.getEndDate());
         }
     }
 
