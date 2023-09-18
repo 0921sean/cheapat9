@@ -50,7 +50,7 @@ public class OrderApiController {
         order.setPw(passwordEncoder.encode(request.getPw()));
         Order.setBase(item, order);
 
-        Long id = orderService.saveOrder(order);
+        Long id = orderService.saveOrder(item, order);
         return new OrderDto(order);
     }
 

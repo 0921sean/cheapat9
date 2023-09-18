@@ -41,7 +41,7 @@ public class OrderController {
         order.setPw(form.getPw());
         Order.setBase(item, order);
 
-        orderService.saveOrder(order);
+        orderService.saveOrder(item, order);
         return "redirect:/";
     }
 

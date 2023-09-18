@@ -3,8 +3,10 @@ package project.cheap9.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.cheap9.domain.Item;
 import project.cheap9.domain.Order;
 import project.cheap9.domain.OrderStatus;
+import project.cheap9.repository.ItemRepository;
 import project.cheap9.repository.OrderRepository;
 
 import java.util.List;
@@ -15,12 +17,14 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final ItemRepository itemRepository;
 
     /**
      * 주문
      */
     @Transactional
-    public Long saveOrder(Order order) {
+    public Long saveOrder(Item item, Order order) {
+        itemRepository.save(item);
         orderRepository.save(order);
         return order.getId();
     }

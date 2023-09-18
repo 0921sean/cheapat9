@@ -42,7 +42,7 @@ public class OrderServiceTest {
 
         //when
         Long itemId = itemService.saveItem(item);
-        Long orderId = orderService.saveOrder(order);
+        Long orderId = orderService.saveOrder(item, order);
 
         //then
         Item getItem = itemRepository.findOne(itemId);
@@ -64,7 +64,7 @@ public class OrderServiceTest {
                 "01010", "101-101", "1234");
 
         //when
-        orderService.saveOrder(order);
+        orderService.saveOrder(item, order);
         
         //then
         fail("재고 수량 부족 예외가 발생해야 한다.");
