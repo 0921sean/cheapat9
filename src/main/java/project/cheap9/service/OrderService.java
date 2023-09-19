@@ -17,14 +17,14 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ItemRepository itemRepository;
+    private final ItemService itemService;
 
     /**
      * 주문
      */
     @Transactional
     public Long saveOrder(Item item, Order order) {
-        itemRepository.save(item);
+        itemService.update(item.getId(), item.getName(), item.getOriginalPrice(), item.getPrice(), item.getStockQuantity(), item.getStartDate().toString(), item.getEndDate().toString());
         orderRepository.save(order);
         return order.getId();
     }
