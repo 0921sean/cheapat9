@@ -1,11 +1,12 @@
 package project.cheap9.api;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import project.cheap9.dto.user.request.CheckUserRequest;
+import project.cheap9.dto.user.response.CheckUserResponse;
 
 import javax.validation.Valid;
 
@@ -26,24 +27,4 @@ public class UserApiController {
         return new CheckUserResponse("False");
     }
 
-    /**
-     * 입력값
-     */
-    @Data
-    static class CheckUserRequest {
-        private String id;
-        private String password;
-    }
-
-    /**
-     * 출력값
-     */
-    @Data
-    static class CheckUserResponse {
-        private String result;
-
-        public CheckUserResponse(String result) {
-            this.result = result;
-        }
-    }
 }

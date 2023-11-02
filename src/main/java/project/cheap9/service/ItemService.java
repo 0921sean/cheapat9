@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.cheap9.domain.Item;
+import project.cheap9.exception.NotEnoughStockException;
 import project.cheap9.repository.ItemRepository;
 
 import java.time.LocalDateTime;
@@ -53,6 +54,18 @@ public class ItemService {
         LocalDateTime end = LocalDateTime.parse(endDate,
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         item.setEndDate(end);
+    }
+
+    /**
+     * 상품 재고 수정
+     */
+    @Transactional
+    public void updateStock(Item item, int quantity) {
+        if (item.getStockQuantity() - quantity < 0) {
+            throw new NotEnoughStockException("Error: Not enough stock");
+        }
+        int changedQuantity = item.getStockQuantity() - quantity;
+        item.setStockQuantity(changedQuantity);
     }
 
 }

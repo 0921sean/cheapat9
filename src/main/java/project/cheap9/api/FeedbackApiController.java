@@ -1,12 +1,14 @@
 package project.cheap9.api;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import project.cheap9.domain.Feedback;
+import project.cheap9.dto.feedback.request.CreateFeedbackRequest;
+import project.cheap9.dto.feedback.response.CreateFeedbackResponse;
+import project.cheap9.dto.feedback.response.FeedbackDto;
 import project.cheap9.service.FeedbackService;
 
 import javax.validation.Valid;
@@ -41,37 +43,5 @@ public class FeedbackApiController {
                 .map(f -> new FeedbackDto(f))
                 .collect(Collectors.toList());
         return result;
-    }
-
-//    + 필요한 재료들
-    /**
-     * 입력값
-     */
-    @Data
-    static class CreateFeedbackRequest {
-        private String content;
-    }
-
-    /**
-     * 출력값
-     */
-    @Data
-    static class CreateFeedbackResponse {
-        private Long id;
-
-        public CreateFeedbackResponse(Long id) {
-            this.id = id;
-        }
-    }
-
-    @Data
-    static class FeedbackDto {
-        private Long id;
-        private String content;
-
-        public FeedbackDto(Feedback feedback) {
-            this.id = feedback.getId();
-            this.content = feedback.getContent();
-        }
     }
 }

@@ -4,6 +4,11 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import project.cheap9.domain.Item;
+import project.cheap9.dto.item.request.CreateItemRequest;
+import project.cheap9.dto.item.request.UpdateItemRequest;
+import project.cheap9.dto.item.response.CreateItemResponse;
+import project.cheap9.dto.item.response.ItemDto;
+import project.cheap9.dto.item.response.UpdateItemResponse;
 import project.cheap9.service.ItemService;
 
 import javax.validation.Valid;
@@ -72,78 +77,6 @@ public class ItemApiController {
                 .map(i -> new ItemDto(i))
                 .collect(Collectors.toList());
         return result;
-    }
-
-//   + 필요한 재료들
-    /**
-     * 입력값
-     */
-    @Data
-    static class CreateItemRequest {
-        private String name;
-        private int originalPrice;
-        private int price;
-        private int stockQuantity;
-        private String startDate;
-        private String endDate;
-    }
-
-    @Data
-    static class UpdateItemRequest {
-        private String name;
-        private int originalPrice;
-        private int price;
-        private int stockQuantity;
-        private String startDate;
-        private String endDate;
-    }
-
-    /**
-     * 출력값
-     */
-    @Data
-    static class CreateItemResponse {
-        private Long id;
-
-        public CreateItemResponse(Long id) {
-            this.id = id;
-        }
-    }
-
-    @Data
-    static class UpdateItemResponse {
-        private Long id;
-
-        public UpdateItemResponse(Long id) {
-            this.id = id;
-        }
-    }
-
-    @Data
-    static class ItemDto {
-        private Long itemId;
-        private String name;
-        private int originalPrice;
-        private int price;
-        private int discountRate;
-        private int stockQuantity;
-        private String startDate;
-        private String endDate;
-        private boolean eventIng;
-
-        public ItemDto(Item item) {
-            itemId = item.getId();
-            name = item.getName();
-            originalPrice = item.getOriginalPrice();
-            price = item.getPrice();
-            discountRate = item.getDiscountRate();
-            stockQuantity = item.getStockQuantity();
-            startDate = item.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            endDate = item.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-            LocalDateTime today = LocalDateTime.now();
-            eventIng = !today.isBefore(item.getStartDate()) && !today.isAfter(item.getEndDate());
-        }
     }
 
 }

@@ -5,11 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import project.cheap9.domain.Order;
+import project.cheap9.domain.OrderStatus;
 import project.cheap9.service.ItemService;
 import project.cheap9.domain.Item;
 import project.cheap9.service.OrderService;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,17 +40,13 @@ public class OrderController {
         order.setAddress(form.getAddress());
         order.setDongho(form.getDongho());
         order.setPw(form.getPw());
-        Order.setBase(item, order);
+        order.setStatus(OrderStatus.WAITING);
+        order.setOrderDate(LocalDateTime.now());
+        order.setOrderPrice(item.getPrice() * order.getCount());
+        itemService.updateStock(item, order.getCount());
 
-        orderService.saveOrder(item, order);
+        orderService.saveOrder(order);
         return "redirect:/";
     }
-
-//    @GetMapping("/orders")
-//    public String list(Model model) {
-//        List<Order> orders = orderService.findOrders(number, pw);
-//        model.addAttribute("orders", orders);
-//        return "orders/orderList";
-//    }
 
 }

@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import project.cheap9.domain.Item;
 import project.cheap9.domain.Order;
 import project.cheap9.domain.OrderStatus;
-import project.cheap9.repository.ItemRepository;
 import project.cheap9.repository.OrderRepository;
 
 import java.util.List;
@@ -23,8 +22,7 @@ public class OrderService {
      * 주문
      */
     @Transactional
-    public Long saveOrder(Item item, Order order) {
-        itemService.update(item.getId(), item.getName(), item.getOriginalPrice(), item.getPrice(), item.getStockQuantity(), item.getStartDate().toString(), item.getEndDate().toString());
+    public Long saveOrder(Order order) {
         orderRepository.save(order);
         return order.getId();
     }
@@ -32,6 +30,7 @@ public class OrderService {
     /**
      * 주문 검색
      */
+    @Transactional
     public List<Order> findOrders() {
         return orderRepository.findAll();
     }
@@ -50,6 +49,21 @@ public class OrderService {
     public void update(Long id, OrderStatus status) {
         Order order = orderRepository.findOne(id);
         order.setStatus(status);
+    }
+
+    /**
+     * 주문 추가
+     */
+    @Transactional
+    public Long createOrderAndModifyStock(Long itemId, Order order) {
+        Item item = itemService.findOne(itemId);
+
+        order.setItem(item);
+        order.setOrderPrice(item.getPrice() * order.getCount());
+        itemService.updateStock(item, order.getCount());
+
+        orderRepository.save(order);
+        return order.getId();
     }
 
 }

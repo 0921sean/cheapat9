@@ -2,7 +2,6 @@ package project.cheap9.controller;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.cheap9.domain.Item;
 
 import javax.validation.constraints.NotEmpty;
 

@@ -60,9 +60,4 @@ public class SecurityConfig {
                 .invalidateHttpSession(true); //로그아웃시 생성된 세션 삭제 활성화
         return http.build();
     }
-
-//    public WebSecurityCostomizer webSecurityCostomizer() {
-//
-//        // configure web security here ...
-//    }
 }

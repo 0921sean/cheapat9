@@ -1,15 +1,9 @@
 spring:
-  datasource:
-    url: jdbc:mysql://db-cheap9.cmlb6weeeogc.ap-northeast-2.rds.amazonaws.com:3306/cheap9?serverTimezone=UTC
-    username:
-    password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
   profiles:
     include: secret
+    default: local
 
   jpa:
-    hibernate:
-      ddl-auto: none
     properties:
       hibernate:
         # show_sql: true

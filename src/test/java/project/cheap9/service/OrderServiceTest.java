@@ -16,6 +16,7 @@ import project.cheap9.repository.OrderRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.time.LocalDateTime;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -42,7 +43,7 @@ public class OrderServiceTest {
 
         //when
         Long itemId = itemService.saveItem(item);
-        Long orderId = orderService.saveOrder(item, order);
+        Long orderId = orderService.saveOrder(order);
 
         //then
         Item getItem = itemRepository.findOne(itemId);
@@ -64,7 +65,7 @@ public class OrderServiceTest {
                 "01010", "101-101", "1234");
 
         //when
-        orderService.saveOrder(item, order);
+        orderService.saveOrder(order);
         
         //then
         fail("재고 수량 부족 예외가 발생해야 한다.");
@@ -91,7 +92,11 @@ public class OrderServiceTest {
         order.setZipcode(zipcode);
         order.setDongho(dongho);
         order.setPw(pw);
-        order.setBase(item, order);
+        order.setStatus(OrderStatus.WAITING);
+        order.setOrderDate(LocalDateTime.now());
+        order.setOrderPrice(item.getPrice() * order.getCount());
+        itemService.updateStock(item, order.getCount());
+
         em.persist(order);
         return order;
     }

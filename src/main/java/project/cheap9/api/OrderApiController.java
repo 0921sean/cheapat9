@@ -1,16 +1,18 @@
 package project.cheap9.api;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import project.cheap9.domain.Item;
 import project.cheap9.domain.Order;
 import project.cheap9.domain.OrderStatus;
+import project.cheap9.dto.order.request.CreateOrderRequest;
+import project.cheap9.dto.order.request.GetOrderRequest;
+import project.cheap9.dto.order.request.UpdateOrderRequest;
+import project.cheap9.dto.order.response.OrderDto;
+import project.cheap9.dto.order.response.UpdateOrderResponse;
 import project.cheap9.exception.NotEnoughStockException;
-import project.cheap9.service.ItemService;
 import project.cheap9.service.OrderService;
 
 import javax.validation.Valid;
@@ -24,7 +26,6 @@ import java.util.stream.Collectors;
 public class OrderApiController {
 
     private final OrderService orderService;
-    private final ItemService itemService;
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/healthCheck")
@@ -37,10 +38,7 @@ public class OrderApiController {
      */
     @PostMapping("/api/orders")
     public OrderDto saveOrder(@RequestBody @Valid CreateOrderRequest request) {
-        Item item = itemService.findOne(request.getItemId());
-
-        Order order = new Order(); // orderPrice, (count), (status, orderDate) 값 없음
-        order.setItem(item);
+        Order order = new Order();
         order.setCount(request.getCount());
         order.setName(request.getName());
         order.setNumber(request.getNumber());
@@ -48,9 +46,9 @@ public class OrderApiController {
         order.setAddress(request.getAddress());
         order.setDongho(request.getDongho());
         order.setPw(passwordEncoder.encode(request.getPw()));
-        Order.setBase(item, order);
-
-        Long id = orderService.saveOrder(item, order);
+        order.setStatus(OrderStatus.WAITING);
+        order.setOrderDate(LocalDateTime.now());
+        Long id = orderService.createOrderAndModifyStock(request.getItemId(), order);
         return new OrderDto(order);
     }
 
@@ -105,80 +103,4 @@ public class OrderApiController {
         return result;
     }
 
-//   + 필요한 재료들
-    /**
-     * 입력값
-     */
-    @Data
-    static class CreateOrderRequest {
-        private Long itemId;
-        private int count;
-        private String name;
-        private String number;
-        private String zipcode;
-        private String address;
-        private String dongho;
-        private String pw;
-    }
-
-    @Data
-    static class GetOrderRequest {
-        private String number;
-        private String pw;
-    }
-
-    @Data
-    static class UpdateOrderRequest {
-        private OrderStatus status;
-    }
-
-    /**
-     * 출력값
-     */
-//    @Data
-//    static class CreateOrderResponse {
-//        private Long id;
-//
-//        public CreateOrderResponse(Long id) {
-//            this.id = id;
-//        }
-//    }
-
-    @Data
-    static class UpdateOrderResponse {
-        private Long id;
-
-        public UpdateOrderResponse(Long id) {
-            this.id = id;
-        }
-    }
-
-    @Data
-    static class OrderDto { // 출력될 요소들
-        private Long orderId;
-        private Item item;
-        private int orderPrice;
-        private int count;
-        private String name;
-        private String number;
-        private String zipcode;
-        private String address;
-        private String dongho;
-        private LocalDateTime orderDate;
-        private OrderStatus orderStatus;
-
-        public OrderDto(Order order) {
-            orderId = order.getId();
-            item = order.getItem();
-            orderPrice = order.getOrderPrice();
-            count = order.getCount();
-            name = order.getName();
-            number = order.getNumber();
-            zipcode = order.getZipcode();
-            address = order.getAddress();
-            dongho = order.getDongho();
-            orderDate = order.getOrderDate();
-            orderStatus = order.getStatus();
-        }
-    }
 }
