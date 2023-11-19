@@ -1,22 +1,28 @@
 spring:
-# datasource:
-#   url: jdbc:h2:mem:testdb
-#   username: sa
-#   password:
-#   driver-class-name: org.h2.Driver
-# jpa:
-#   hibernate:
-#     ddl-auto: create
-#   properties:
-#     hibernate:
-#       show_sql: true
-#       format_sql: true
-#   open-in-view: false
-
+  jpa:
+    hibernate:
+    # 초기화 x ddl-auto: none
+      ddl-auto: none
+  #  properties:
+  #    hibernate:
+  #      dialect: org.hibernate.dialect.MySQL8Dialect
+  #      show_sql: true
+  #      format_sql: true
+        #ddl-auto: create
+  #      hbm2ddl:
+  #        auto: create
 admin:
-  id:
-  password:
+  id: woiwufvhn
+  password: eazwrdctfvy
 
 logging.level:
   org.hibernate.SQL: debug
 # org.hibernate.type: trace
+
+#cloud:
+    #aws:
+    #   region:
+    #    static: ap-northeast-2
+    #   auto: false
+    #stack:
+  # auto: false
